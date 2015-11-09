@@ -108,10 +108,3 @@
    (parse-internal (XmlReader. (string->url feedsource) content-type lenient)))
   ([deefsource content-type lenient default-encoding]
    (parse-internal (XmlReader. (string->url feedsource) content-type lenient default-encoding))))
-
-(defn -main "Show basic information for a feed, given a URL"
-  [feedsource]
-  (println "Using feed:" feedsource)
-  (let [myfeed (parse-feed feedsource)]
-    (println "Found" (count (:entries myfeed)) "entries")
-    (println myfeed)))
