@@ -32,7 +32,7 @@
       (is (= (-> pf :link) "http://blog.gonzih.me/index.xml"))
       (is (= (-> pf :published-date) #inst "2015-12-11T00:00:00.000-00:00"))
       (is (= (-> pf :title) "Max Gonzih"))
-      (is (= (-> pf :uri) nil)))
+      (is (= (-> pf :feed-uri) nil)))
 
     (testing :entry
       (is (= (-> pf :entries count) 15))
