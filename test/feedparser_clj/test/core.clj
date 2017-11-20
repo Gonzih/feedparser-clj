@@ -4,13 +4,20 @@
            [java.io InputStreamReader]
            [com.sun.syndication.feed.synd SyndFeed])
   (:require [feedparser-clj.core :refer :all :reload true]
-            [clojure.test :refer :all]))
+            [clojure.test :refer :all]
+            [clojure.spec.alpha :as s]))
 
 (defn load-feed-fixture [name]
   (str (clojure.java.io/resource (format "fixtures/%s" name))))
 
 (deftest parse-test
   (let [pf (parse-feed (load-feed-fixture "gonzih-blog.xml"))]
+    (instrument-all)
+
+    (testing :spec
+      (is (s/valid? :feedparser-clj.core/feed pf)
+          (s/explain-str :feedparser-clj.core/feed pf)))
+
     (testing :feed
       (is (= (-> pf :author) "gonzih@gmail.com (Max Gonzih)"))
       (is (= (-> pf :categories) []))
@@ -18,7 +25,7 @@
       (is (= (-> pf :entry-links) []))
       (is (= (-> pf :image) nil))
       (is (= (-> pf :copyright) "This work is licensed under a Creative Commons Attribution 4.0 International License."))
-      (is (= (-> pf :description) "Recent content on Max Gonzih"))
+      (is (= (-> pf :feed-description) "Recent content on Max Gonzih"))
       (is (= (-> pf :encoding) nil))
       (is (= (-> pf :feed-type) "rss_2.0"))
       (is (= (-> pf :language) "en-us"))
